@@ -1,0 +1,62 @@
+<div class="container">
+    <h2>Patient List</h2>
+    <input class="form-control mb-2" [(ngModel)]="search" placeholder="Search by name or email"/>
+    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#patientModal">Add Patient</button>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th class="text-end">Visit Count</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let patient of filteredPatients">
+                <td class="text-center">
+                    <input 
+                        type="radio" 
+                        name="selectedPatient" 
+                        [value]="patient._id" 
+                        [checked]="patient._id === selectedPatientID" 
+                        (change)="choosePatient(patient._id!)"/>
+                </td>
+                <td>{{ patient.firstName }} {{ patient.lastName }}</td>
+                <td>{{ patient.email }}</td>
+                <td>{{ patient.phoneNumber }}</td>
+                <td class="text-end">{{ patient.visitCount }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary me-1 py-1" (click)="onEditClick(patient)">Edit</button>
+                    <button type="button" class="btn btn-danger py-1" (click)="handleDelete(patient._id!)">Delete</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info" (click)="openSummaryModal(patient)">Summary</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="summaryModalLabel">Patient Summary</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" *ngIf="summaryPatient">
+                <p><strong>Name:</strong> {{ summaryPatient.firstName }} {{ summaryPatient.lastName }}</p>
+                <p><strong>Email:</strong> {{ summaryPatient.email }}</p>
+                <p><strong>Phone:</strong> {{ summaryPatient.phoneNumber }}</p>
+                <p><strong>Address:</strong> {{ summaryPatient.address }}</p>
+                <p><strong>Total Visits:</strong> {{ summaryPatient.visitCount || 0 }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-patient-form (submitForm)="handleSubmit($event)"></app-patient-form>

@@ -1,0 +1,60 @@
+<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title">Patient Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">First Name:</label>
+                        <input class="form-control" formControlName="firstName" [class.is-invalid]="form.get('firstName')?.invalid && form.get('firstName')?.touched"/>
+                        <div class="invalid-feedback" *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched">
+                            First Name is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last Name:</label>
+                        <input class="form-control" formControlName="lastName" [class.is-invalid]="form.get('lastName')?.invalid && form.get('lastName')?.touched"/>
+                        <div class="invalid-feedback" *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">
+                            Last Name is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" formControlName="dob" [class.is-invalid]="form.get('dob')?.invalid && form.get('dob')?.touched"/>
+                        <div class="invalid-feedback" *ngIf="form.get('dob')?.invalid && form.get('dob')?.touched">
+                            Date of Birth is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input class="form-control" formControlName="email" [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"/>
+                        <div class="invalid-feedback" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                            <span *ngIf="form.get('email')?.errors?.['required']">Email is required</span>
+                            <span *ngIf="form.get('email')?.errors?.['email']">Email must be valid</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number:</label>
+                        <input class="form-control" formControlName="phoneNumber" [class.is-invalid]="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched"/>
+                        <div class="invalid-feedback" *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
+                            Phone Number is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address:</label>
+                        <textarea rows="3" class="form-control" formControlName="address" [class.is-invalid]="form.get('address')?.invalid && form.get('address')?.touched"></textarea>
+                        <div class="invalid-feedback" *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+                            Address is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
