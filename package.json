@@ -1,0 +1,10 @@
+{
+    "name": "patient-visit-app",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "install-all": "npm --prefix patient-api install && npm --prefix patient-ui install",
+        "start-api": "npm --prefix patient-api start",
+        "start-ui": "npm --prefix patient-ui start"
+    }
+}
