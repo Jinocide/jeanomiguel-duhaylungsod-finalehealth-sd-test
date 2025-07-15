@@ -22,8 +22,13 @@ export class VisitListComponent {
 
     loadVisits() {
         if (this.patientID) {
-            this.visitService.getByPatient(this.patientID).subscribe((data) => {
-                this.visits = data.sort((a, b) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime());
+            this.visitService.getByPatient(this.patientID).subscribe({
+                next: (data) => {
+                    this.visits = data.sort((a, b) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime());
+                },
+                error: (err) => {
+                    alert("Error: " + err.error.message);
+                }
             });
         }
     }
@@ -72,7 +77,7 @@ export class VisitListComponent {
                     this.loadVisits();
                 },
                 error: (err) => {
-                    console.log(err.error.message);
+                    alert("Error: " + err.error.message);
                 }
             });
         }
@@ -100,7 +105,7 @@ export class VisitListComponent {
                     this.loadVisits();
                 },
                 error: (err) => {
-                    console.log(err.error.message);
+                    alert("Error: " + err.error.message);
                 }
             });
         }
@@ -116,7 +121,7 @@ export class VisitListComponent {
                 this.loadVisits();
             },
             error: (err) => {
-
+                alert("Error: " + err.error.message);
             }
         });
     }

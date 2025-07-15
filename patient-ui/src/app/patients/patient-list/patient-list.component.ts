@@ -36,8 +36,13 @@ export class PatientListComponent {
     }
 
     loadPatients() {
-        this.patientService.getAll().subscribe((data) => {
-            this.patients = data
+        this.patientService.getAll().subscribe({
+            next: (data) => {
+                this.patients = data
+            },
+            error: (err) => {
+                alert("Error: " + err.error.message)
+            }
         });
     }
 
@@ -49,26 +54,31 @@ export class PatientListComponent {
     handleSubmit(patient: Patient) {
         //if patient creation
         if (!patient._id) {
-            this.patientService.create(patient).subscribe(() => {
-                // Remove focus from any input
-                const active = document.activeElement as HTMLElement;
-                if (active) active.blur();
+            this.patientService.create(patient).subscribe({
+                next: () => {
+                    // Remove focus from any input
+                    const active = document.activeElement as HTMLElement;
+                    if (active) active.blur();
 
-                //hide modal and show alert
-                const modalElement = document.getElementById('patientModal');
-                if (!modalElement) return;
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                if (modalInstance) {
-                    // Attach event listener BEFORE calling hide()
-                    modalElement.addEventListener('hidden.bs.modal', () => {
-                        alert("Patient is saved successfully");
-                        }, { once: true }); // so it only fires once
+                    //hide modal and show alert
+                    const modalElement = document.getElementById('patientModal');
+                    if (!modalElement) return;
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        // Attach event listener BEFORE calling hide()
+                        modalElement.addEventListener('hidden.bs.modal', () => {
+                            alert("Patient is saved successfully");
+                            }, { once: true }); // so it only fires once
 
-                    modalInstance.hide();
+                        modalInstance.hide();
+                    }
+
+                    //reload patients
+                    this.loadPatients();
+                },
+                error: (err) => {
+                    alert("Error: " + err.error.message);
                 }
-
-                //reload patients
-                this.loadPatients();
             });
         }
 
@@ -97,7 +107,7 @@ export class PatientListComponent {
                     this.loadPatients();
                 },
                 error: (err) => {
-
+                    alert("Error: " + err.error.message);
                 }
             });
 
@@ -107,13 +117,18 @@ export class PatientListComponent {
     }
 
     handleDelete(patientID: string) {
-        this.patientService.delete(patientID).subscribe(() => {
-            alert("Patient deleted");
+        this.patientService.delete(patientID).subscribe({
+            next: () => {
+                alert("Patient deleted");
 
-            //reload patients
-            this.loadPatients();
+                //reload patients
+                this.loadPatients();
 
-            this.onPatientDelete.emit(patientID);
+                this.onPatientDelete.emit(patientID);
+            },
+            error: (err) => {
+                alert("Error: " + err.error.message);
+            }
         });
     }
 
